@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Создание новой задачи</title>
+<style>
+:root {
+  --phone-bg: #111;
+  --screen: #f4f6fb;
+  --white: #fff;
+  --text: #1f2430;
+  --muted: #8a91a3;
+  --line: #e6e9f2;
+  --primary: #ef3b2d;
+  --orange: #ff7a32;
+  --grad-1: #ff9a3c;
+  --grad-2: #fe6a20;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  font-family: Inter, system-ui, Arial, sans-serif;
+  background: var(--phone-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.phone {
+  width: 375px;
+  background: var(--screen);
+  border-radius: 16px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, .5);
+  overflow: hidden;
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--white);
+  padding: 14px;
+  border-bottom: 1px solid var(--line);
+}
+
+.back {
+  position: absolute;
+  left: 12px;
+  top: 10px;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: #fff;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+.back span {
+  font-size: 18px;
+}
+
+.topbar h1 {
+  margin: 0;
+  font-size: 18px;
+  color: var(--text);
+  font-weight: 800;
+}
+
+.container {
+  padding: 12px;
+}
+
+.section {
+  margin-bottom: 12px;
+}
+
+.card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(18, 22, 33, .05);
+  padding: 14px;
+}
+
+h4 {
+  margin: 0 0 6px;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.note {
+  margin: 0 0 10px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.upload-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.upload {
+  height: 78px;
+  border-radius: 12px;
+  background: #fff;
+  display: grid;
+  place-items: center;
+  border: 2px dashed #ffa47f;
+  color: #ff6a3a;
+  cursor: pointer;
+  transition: .15s;
+}
+
+.upload:hover {
+  filter: brightness(.98);
+}
+
+.upload .ico {
+  font-size: 20px;
+}
+
+.field {
+  margin-top: 12px;
+}
+
+.label {
+  font-size: 12px;
+  color: #707895;
+  margin-bottom: 6px;
+}
+
+.input {
+  position: relative;
+  background: #f8f9fc;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+}
+
+.input input,
+.input textarea,
+.input select {
+  appearance: none;
+  -webkit-appearance: none;
+  border: 0;
+  background: transparent;
+  outline: none;
+  width: 100%;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.input textarea {
+  resize: vertical;
+  min-height: 88px;
+}
+
+.leading {
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  background: #fff;
+  border: 1px solid var(--line);
+  font-size: 14px;
+  color: #ff6a3a;
+  flex: 0 0 26px;
+}
+
+.trailing {
+  margin-left: auto;
+  color: #a1a7b6;
+  font-size: 16px;
+}
+
+.footer {
+  position: sticky;
+  bottom: 0;
+  background: linear-gradient(180deg, rgba(133, 115, 255, .12), rgba(255, 255, 255, 0));
+  padding: 12px 14px 14px;
+}
+
+.cta {
+  width: 100%;
+  padding: 14px;
+  border: 0;
+  border-radius: 999px;
+  color: #fff;
+  font-weight: 800;
+  font-size: 15px;
+  cursor: pointer;
+  background: linear-gradient(180deg, var(--grad-1), var(--grad-2));
+  box-shadow: 0 10px 24px rgba(255, 122, 0, .35);
+}
+
+select {
+  background-image: none;
+}
+
+.input.select .trailing::after {
+  content: "▾";
+}
+
+.input:focus-within {
+  border-color: #ffd1aa;
+  box-shadow: 0 0 0 3px rgba(255, 170, 102, .18);
+}
+
+@media (max-width: 575px) {
+  html {
+    font-size: 14px;
+  }
+  .input {
+    font-size: 13px;
+    padding: 10px;
+  }
+  .btn {
+    width: 100%;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 1024px) {
+  html {
+    font-size: 15px;
+  }
+  .container {
+    padding: 18px;
+  }
+  .card {
+    padding: 14px;
+  }
+}
+</style>
+</head>
+<body>
+<main class="phone">
+  <header class="topbar">
+    <button class="back" id="btnBack" aria-label="Назад"><span>←</span></button>
+    <h1>Создание новой задачи</h1>
+  </header>
+
+  <div class="container">
+    <section class="section card">
+      <h4>Вложение</h4>
+      <p class="note">Формат должен быть в <b>.pdf/.jpeg/.png</b> и меньше <b>5 МБ</b></p>
+
+      <div class="upload-grid">
+        <label class="upload"><span class="ico">⤴</span><input type="file" hidden></label>
+        <label class="upload"><span class="ico">⤴</span><input type="file" hidden></label>
+        <label class="upload"><span class="ico">⤴</span><input type="file" hidden></label>
+      </div>
+
+      <div class="field">
+        <div class="label">Название задачи</div>
+        <div class="input">
+          <span class="leading">🗂</span>
+          <input id="title" type="text" placeholder="Введите название задачи">
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="label">Описание задачи</div>
+        <div class="input">
+          <textarea id="desc" placeholder="Введите описание задачи"></textarea>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="label">Приоритет</div>
+        <div class="input select">
+          <span class="leading">🏷</span>
+          <select id="priority">
+            <option selected disabled>Выберите приоритет</option>
+            <option>Низкий</option>
+            <option>Средний</option>
+            <option>Высокий</option>
+            <option>Критический</option>
+          </select>
+          <span class="trailing"></span>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="label">Сложность</div>
+        <div class="input select">
+          <span class="leading">✋</span>
+          <select id="difficulty">
+            <option selected disabled>Выберите сложность</option>
+            <option>Очень легко</option>
+            <option>Легко</option>
+            <option>Средне</option>
+            <option>Сложно</option>
+            <option>Очень сложно</option>
+          </select>
+          <span class="trailing"></span>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="label">Статус</div>
+        <div class="input select">
+          <span class="leading">🔔</span>
+          <select id="status">
+            <option selected disabled>Выберите статус</option>
+            <option>Не начато</option>
+            <option>В процессе</option>
+            <option>На паузе</option>
+            <option>Готово</option>
+          </select>
+          <span class="trailing"></span>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">
+      <button class="cta" id="btnCreate" type="button">Создать задачу</button>
+    </div>
+  </div>
+</main>
+
+<script>
+  const backBtn = document.getElementById('btnBack');
+  function goBack() {
+    if (history.length > 1) {
+      history.back();
+    } else {
+      window.location.href = 'task.html';
+    }
+  }
+  backBtn.addEventListener('click', goBack);
+
+  document.getElementById('btnCreate').addEventListener('click', () => {
+    window.location.href = 'task.html';
+  });
+
+  ['title', 'desc', 'priority', 'difficulty', 'status'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        document.getElementById('btnCreate').click();
+      }
+    });
+  });
+
+  document.querySelectorAll('.upload').forEach(label => {
+    label.addEventListener('click', () => {
+      const input = label.querySelector('input[type="file"]');
+      if (input) input.click();
+    });
+  });
+</script>
+</body>
+</html>

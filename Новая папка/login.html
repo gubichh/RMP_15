@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Вход</title>
+  <style>
+    :root{--bg:#111;--line:#e6e9f2;--muted:#9aa0a6;--white:#fff;--accent:#ffcc00}
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);display:flex;align-items:center;justify-content:center}
+    .container{width:375px;background:#fff;border-radius:16px;box-shadow:0 12px 40px rgba(0,0,0,.5);padding:24px}
+    h1{margin:0 0 8px;font-size:24px}
+    .sub{margin:0 0 16px;color:var(--muted)}
+    .field{margin:10px 0}
+    label{display:block;font-size:12px;color:#6b7280;margin-bottom:6px}
+    input{width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;background:#f8f9fa}
+    .row{display:flex;gap:10px;margin-top:10px}
+    .btn{flex:1;padding:12px;border:0;border-radius:10px;font-weight:800;cursor:pointer}
+    .primary{background:var(--accent)}
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Вход</h1>
+  <p class="sub">Продолжайте работать с заметками на любом устройстве.</p>
+
+  <div class="field"><label>Логин</label><input id="login"></div>
+  <div class="field"><label>Пароль</label><input id="pwd" type="password"></div>
+
+  <div class="row">
+    <button class="btn" onclick="location.href='signup.html'">Регистрация</button>
+    <button class="btn primary" id="go">Войти</button>
+  </div>
+</div>
+
+<script>
+  document.getElementById('go').onclick = ()=>{ location.href='index.html'; };
+</script>
+</body>
+</html>

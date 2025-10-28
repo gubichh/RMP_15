@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Заметки</title>
+    <style>
+        :root{
+            --phone-bg:#111; --screen:#f4f6fb; --white:#fff;
+            --text:#1f2430; --muted:#8a91a3; --line:#e6e9f2;
+            --accent:#ffcc00; --accent-ink:#7a5e00;
+        }
+        *{box-sizing:border-box}
+        html,body{height:100%;margin:0;font-family:Inter,system-ui,Arial,sans-serif;background:var(--phone-bg);display:flex;align-items:center;justify-content:center}
+        .phone{width:375px;background:var(--screen);border-radius:16px;box-shadow:0 12px 40px rgba(0,0,0,.5);overflow:hidden}
+        .topbar{position:sticky;top:0;display:flex;align-items:center;gap:8px;justify-content:center;background:var(--white);padding:14px;border-bottom:1px solid var(--line)}
+        .topbar .left{position:absolute;left:12px;top:10px;display:flex;align-items:center;gap:8px}
+        .back, .profile{width:36px;height:36px;border-radius:999px;border:1px solid var(--line);background:#fff;display:grid;place-items:center;cursor:pointer}
+        .topbar h1{margin:0;font-size:18px;color:var(--text);font-weight:800}
+        .container{padding:12px}
+        .search{display:flex;align-items:center;gap:8px;background:#f8f9fc;border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+        .search input{border:0;outline:0;background:transparent;width:100%;font-size:14px}
+        .section-title{margin:14px 2px 8px;font-weight:900;color:#2a2f3c;font-size:13px;letter-spacing:.02em}
+        .card{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:12px;box-shadow:0 6px 18px rgba(18,22,33,.05);margin-bottom:8px;cursor:pointer}
+        .card h3{margin:0 0 4px;font-size:15px;color:var(--text)}
+        .card p{margin:0;color:var(--muted);font-size:13px}
+        .thumb-row{display:flex;gap:6px;margin-top:8px}
+        .thumb{width:28px;height:28px;border-radius:6px;background:#eee;display:block;overflow:hidden}
+        .meta{margin-top:6px;color:#9aa0a6;font-size:12px}
+        .footer{position:sticky;bottom:0;background:linear-gradient(180deg,rgba(255,204,0,.08),transparent);padding:12px 14px 14px}
+        .fab{width:48px;height:48px;border-radius:16px;border:0;font-weight:900;background:var(--accent);color:#000;box-shadow:0 8px 20px rgba(255,204,0,.35);cursor:pointer}
+        .counter{display:block;text-align:center;color:#7a7f90;font-size:12px;margin-top:6px}
+    </style>
+</head>
+<body>
+<main class="phone">
+    <header class="topbar">
+        <div class="left">
+            <button class="back" id="toFolders" title="Папки">〈</button>
+        </div>
+        <h1>Заметки</h1>
+        <button class="profile" id="toProfile" title="Профиль">⚙</button>
+    </header>
+
+    <div class="container">
+        <div class="search">
+            🔍 <input id="q" type="search" placeholder="Поиск по заметкам">
+            <button id="voice" title="Голосовой ввод">🎤</button>
+        </div>
+
+        <div id="list"></div>
+
+        <div class="footer">
+            <button class="fab" id="newNote" title="Новая заметка">＋</button>
+            <span class="counter" id="counter">0 заметок</span>
+        </div>
+    </div>
+</main>
+
+<script src="notes.js"></script>
+<script>
+    const list = document.getElementById('list');
+    const counter = document.getElementById('counter');
+    const q = document.getElementById('q');
+
+    function section(title){
+        const h = document.createElement('div');
+        h.className='section-title';
+        h.textContent=title;
+        list.appendChild(h);
+    }
+    function card(n){
+        const el=document.createElement('article');
+        el.className='card';
+        el.innerHTML = `
+    <h3>${n.title || 'Без названия'}</h3>
+    <p>${(n.text||'').slice(0,70) || 'Нет содержимого'}</p>
+    <div class="meta">${new Date(n.updatedAt).toLocaleDateString()}</div>
+  `;
+        el.addEventListener('click', ()=>{ location.href='note.html?id='+encodeURIComponent(n.id); });
+        return el;
+    }
+
+    function render(){
+        list.innerHTML='';
+        const items = Notes.search(q.value.trim());
+        counter.textContent = `${items.length} ${Notes.word(items.length,['заметка','заметки','заметок'])}`;
+
+        const now = Date.now();
+        const within7 = [], within30 = [], older = [];
+        items.forEach(n=>{
+            const age = (now - n.updatedAt)/(1000*60*60*24);
+            if (age <= 7) within7.push(n);
+            else if (age <= 30) within30.push(n);
+            else older.push(n);
+        });
+
+        if(within7.length){ section('Предыдущие 7 дней'); within7.forEach(n=>list.appendChild(card(n))); }
+        if(within30.length){ section('Предыдущие 30 дней'); within30.forEach(n=>list.appendChild(card(n))); }
+        if(older.length){ section('Старые'); older.forEach(n=>list.appendChild(card(n))); }
+    }
+
+    document.getElementById('newNote').onclick = ()=>{
+        const id = Notes.create({title:'Новая заметка', text:''});
+        location.href = 'edit.html?id='+encodeURIComponent(id);
+    };
+    q.addEventListener('input', render);
+    render();
+</script>
+</body>
+</html>

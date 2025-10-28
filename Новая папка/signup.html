@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Регистрация</title>
+    <style>
+        :root{--bg:#111;--line:#e6e9f2;--muted:#9aa0a6;--white:#fff;--accent:#ffcc00}
+        *{box-sizing:border-box}
+        html,body{height:100%;margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);display:flex;align-items:center;justify-content:center}
+        .container{width:375px;background:#fff;border-radius:16px;box-shadow:0 12px 40px rgba(0,0,0,.5);padding:24px}
+        h1{margin:0 0 8px;font-size:24px}
+        .sub{margin:0 0 16px;color:var(--muted)}
+        .field{margin:10px 0}
+        label{display:block;font-size:12px;color:#6b7280;margin-bottom:6px}
+        input{width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;background:#f8f9fa}
+        .error{display:none;color:#c62828;font-size:12px;margin-top:6px}
+        .row{display:flex;gap:10px;margin-top:12px}
+        .btn{flex:1;padding:12px;border:0;border-radius:10px;font-weight:800;cursor:pointer}
+        .primary{background:var(--accent)}
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Создать аккаунт</h1>
+    <p class="sub">Синхронизация заметок и резервное копирование.</p>
+
+    <div class="field"><label>Логин</label><input id="login" required></div>
+    <div class="field"><label>Email</label><input id="email" type="email" required></div>
+    <div class="field"><label>Пароль</label><input id="p1" type="password" required></div>
+    <div class="field"><label>Повторите пароль</label><input id="p2" type="password" required>
+        <div class="error" id="e">Пароли не совпадают</div>
+    </div>
+
+    <div class="row">
+        <button class="btn" onclick="location.href='login.html'">У меня уже есть аккаунт</button>
+        <button class="btn primary" id="ok">Зарегистрироваться</button>
+    </div>
+</div>
+
+<script>
+    document.getElementById('ok').onclick=()=>{
+        const same = p1.value && p1.value===p2.value;
+        e.style.display = same? 'none':'block';
+        if(!same) return;
+        location.href='index.html';
+    };
+</script>
+</body>
+</html>

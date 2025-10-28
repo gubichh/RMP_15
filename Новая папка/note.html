@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Заметка</title>
+    <style>
+        :root{--phone-bg:#111;--screen:#f4f6fb;--white:#fff;--text:#161a22;--muted:#8a91a3;--line:#e6e9f2;--accent:#ffcc00}
+        *{box-sizing:border-box}
+        html,body{height:100%;margin:0;font-family:Inter,system-ui,Arial,sans-serif;background:var(--phone-bg);display:flex;align-items:center;justify-content:center}
+        .phone{width:375px;background:var(--screen);border-radius:16px;box-shadow:0 12px 40px rgba(0,0,0,.5);overflow:hidden}
+        .topbar{position:sticky;top:0;display:flex;align-items:center;justify-content:center;background:var(--white);padding:14px;border-bottom:1px solid var(--line)}
+        .back{position:absolute;left:12px;top:10px;width:36px;height:36px;border-radius:999px;border:1px solid var(--line);background:#fff;display:grid;place-items:center;cursor:pointer}
+        .topbar h1{margin:0;font-size:18px;color:#1f2430}
+        .page{padding:14px}
+        .title{margin:0 0 6px;font-size:24px;font-weight:900;color:#1e2230}
+        .date{margin:0 0 8px;color:#9aa0a6;font-size:12px}
+        .check{display:flex;align-items:flex-start;gap:10px;margin:6px 0}
+        .check input{margin-top:3px}
+        .block h4{margin:14px 0 6px;font-size:14px;color:#2b3242}
+        .block p{margin:0 0 8px;color:#60677b;line-height:1.45}
+        .links a{display:block;color:#1659d3;text-decoration:none;word-break:break-all;margin:6px 0}
+        .toolbar{position:sticky;bottom:0;background:var(--white);border-top:1px solid var(--line);display:flex;gap:10px;justify-content:space-between;padding:10px 12px}
+        .btn{flex:1;border:1px solid var(--line);background:#fff;border-radius:12px;padding:10px;font-weight:800;cursor:pointer}
+        .btn.yellow{background:var(--accent);border-color:#e0b700}
+    </style>
+</head>
+<body>
+<main class="phone">
+    <header class="topbar">
+        <button class="back" id="goBack">〈</button>
+        <h1>Закладки</h1>
+    </header>
+
+    <div class="page">
+        <h2 class="title" id="title">Заголовок</h2>
+        <div class="date" id="date"></div>
+
+        <div id="checklist"></div>
+
+        <section class="block">
+            <h4>Текст</h4>
+            <p id="text">—</p>
+        </section>
+
+        <section class="block links" id="links"></section>
+    </div>
+
+    <div class="toolbar">
+        <button class="btn" id="share">Поделиться</button>
+        <button class="btn" id="pin">Закрепить</button>
+        <button class="btn yellow" id="edit">Редактировать</button>
+    </div>
+</main>
+
+<script src="notes.js"></script>
+<script>
+    const id = new URL(location.href).searchParams.get('id');
+    const note = Notes.get(id);
+    if(!note){ location.href='index.html'; }
+
+    document.getElementById('title').textContent = note.title || 'Без названия';
+    document.getElementById('date').textContent = new Date(note.updatedAt).toLocaleString();
+    document.getElementById('text').textContent = note.text || '—';
+
+    const cl = document.getElementById('checklist');
+    (note.checklist||[]).forEach(item=>{
+        const row = document.createElement('label');
+        row.className='check';
+        row.innerHTML=`<input type="checkbox" ${item.done?'checked':''} disabled> ${item.text}`;
+        cl.appendChild(row);
+    });
+
+    const links = (note.links||[]).filter(Boolean);
+    const linksEl = document.getElementById('links');
+    if(links.length){
+        const h=document.createElement('h4'); h.textContent='Ссылки'; linksEl.appendChild(h);
+        links.forEach(u=>{
+            const a=document.createElement('a'); a.href=u; a.textContent=u; a.target='_blank'; linksEl.appendChild(a);
+        });
+    }
+
+    document.getElementById('goBack').onclick=()=>history.length>1?history.back():location.href='index.html';
+    document.getElementById('edit').onclick=()=>location.href='edit.html?id='+encodeURIComponent(id);
+    document.getElementById('share').onclick=()=>alert('Здесь может быть системный share()');
+    document.getElementById('pin').onclick=()=>{ Notes.togglePin(id); alert('Готово'); };
+</script>
+</body>
+</html>

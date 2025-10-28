@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Детали задания</title>
+<style>
+:root {
+  --phone-bg: #111;
+  --screen: #f4f6fb;
+  --white: #fff;
+  --text: #161a22;
+  --muted: #8a91a3;
+  --line: #e6e9f2;
+  --primary: #ef3b2d;
+  --orange: #ff7a32;
+  --green: #17c964;
+  --chip: #eef1f7;
+}
+
+* { 
+  box-sizing: border-box; 
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Inter, system-ui, Arial, sans-serif;
+  background: var(--phone-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.phone {
+  width: 375px;
+  background: var(--screen);
+  border-radius: 16px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, .5);
+  overflow: hidden;
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+  background: var(--white);
+  padding: 14px;
+  border-bottom: 1px solid var(--line);
+}
+
+.back {
+  position: absolute;
+  left: 12px;
+  top: 10px;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: #fff;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+.back span { 
+  font-size: 18px; 
+}
+
+.topbar h1 {
+  margin: 0;
+  font-size: 18px;
+  color: #1f2430;
+}
+
+.container { 
+  padding: 12px; 
+}
+.section { 
+  margin-bottom: 12px; 
+}
+
+.card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(18, 22, 33, .05);
+  padding: 14px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.title { 
+  font-weight: 800; 
+  color: var(--text); 
+}
+.sub { 
+  margin-top: 4px; 
+  color: var(--muted); 
+  font-size: 12px; 
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff0e6;
+  color: #b54d14;
+  border: 1px solid #ffd1aa;
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.status .flag {
+  width: 16px; 
+  height: 16px; 
+  display: inline-grid; 
+  place-items: center;
+}
+
+.status .flag svg { 
+  width: 16px; 
+  height: 16px; 
+  display: block; }
+
+.chart {
+  margin-top: 12px;
+  border: 2px solid #ffa47f;
+  border-radius: 12px;
+  background: #f7f7f7;
+  height: 180px;
+  position: relative;
+  color: #ff6a3a;
+}
+
+.chart .center {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 22px;
+}
+
+.chart .pager {
+  position: absolute;
+  left: 0; 
+  right: 0; 
+  bottom: 6px;
+  display: flex; 
+  gap: 6px; 
+  justify-content: center;
+}
+
+.dot { 
+  width: 6px; 
+  height: 6px; 
+  border-radius: 6px; 
+  background: #ffd1bb; 
+  opacity: .7; 
+}
+
+.dot.active { 
+  width: 18px; 
+  border-radius: 6px; 
+  background: #ff9063; 
+  opacity: 1; 
+}
+
+.mini-wrap { 
+  display: flex; 
+  gap: 10px; 
+  margin-top: 12px; 
+}
+
+.mini {
+  flex: 1;
+  background: #f8f9fc;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  position: relative;
+  aspect-ratio: 1 / 1;
+  min-height: 102px;
+}
+
+.mini b {
+  display: block; 
+  font-size: 20px; 
+  color: #ff6a3a; 
+  margin-bottom: 2px;
+}
+.mini small { 
+  color: var(--muted); 
+}
+
+.mini::after {
+  content: "";
+  position: absolute;
+  left: -6px; 
+  top: 16px;
+  width: 6px; 
+  height: 6px; 
+  background: #ff9063; 
+  border-radius: 50%;
+}
+
+.desc h4 { 
+  margin: 0 0 6px; 
+  color: #2b3242; 
+  font-size: 14px; 
+}
+
+.desc p  { 
+  margin: 0; 
+  color: #60677b; 
+  font-size: 14px; 
+  line-height: 1.45; 
+}
+
+.grid2 {
+  display: grid; 
+  grid-template-columns: 1fr 1fr; 
+  gap: 14px; 
+  margin-top: 12px;
+}
+
+.kv { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 6px; 
+}
+
+.kv h5 { 
+  margin: 0; 
+  color: #2b3242; 
+  font-size: 14px; 
+}
+
+.badge {
+  display: inline-flex; 
+  align-items: center; 
+  gap: 6px;
+  font-size: 12px; 
+  font-weight: 800; 
+  border-radius: 999px;
+  padding: 8px 10px; 
+  border: 1px solid;
+}
+.badge.red   { 
+  background: #ffe6ea; 
+  color: #b32b45; 
+  border-color: #ffc8d2; 
+}
+
+.badge.green { 
+  background: #e9fff4; 
+  color: #0f9e57; 
+  border-color: #b9f6d0; 
+}
+
+.badge .ico  { 
+  font-size: 14px; 
+}
+
+.mb8 { 
+  margin-bottom: 8px; 
+}
+
+@media (max-width:575px){
+  html{font-size:14px}
+  .btn{width:100%}
+}
+@media (min-width:576px) and (max-width:1024px){
+  html{font-size:15px}
+  .container{padding:18px}
+  .card{padding:14px}
+}
+</style>
+</head>
+<body>
+<main class="phone">
+  <header class="topbar">
+    <button class="back" id="btnBack" aria-label="Назад"><span>←</span></button>
+    <h1>Детали задания</h1>
+  </header>
+
+  <div class="container">
+    <section class="section card">
+      <div class="row mb8">
+        <div>
+          <div class="title">Название Задания</div>
+          <div class="sub">Создано 5 сентября 2025</div>
+        </div>
+        <div class="status">
+          <span class="ico">🕓</span> В процессе
+        </div>
+      </div>
+
+      <div class="chart">
+        <div class="center">
+          75%<br>
+          <span style="font-size:12px;font-weight:600;opacity:.8">Загрузка…</span>
+        </div>
+        <div class="pager">
+          <span class="dot"></span><span class="dot active"></span><span class="dot"></span>
+        </div>
+      </div>
+
+      <div class="mini-wrap">
+        <div class="mini">
+          <div>
+            <b>50%</b>
+            <small>Загрузка…</small>
+          </div>
+        </div>
+        <div class="mini">
+          <div>
+            <b>25%</b>
+            <small>Загрузка…</small>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section card desc">
+      <h4>Описание</h4>
+      <p>Здесь вы можете придумать описание для своей задачи.</p>
+
+      <div class="grid2">
+        <div class="kv">
+          <h5>Приоритет</h5>
+          <span class="badge red"><span class="ico">🏳️</span>Высокий</span>
+        </div>
+        <div class="kv">
+          <h5>Сложность</h5>
+          <span class="badge green"><span class="ico">✋</span>Очень легко</span>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<script>
+  const backBtn = document.getElementById('btnBack');
+  function goBack() {
+    if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      window.location.href = 'task.html';
+    }
+  }
+  backBtn.addEventListener('click', goBack);
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') goBack();
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Органайзер Задач — Выполнено</title>
+<style>
+:root {
+  --bg: #111;
+  --card: #f3f5fb;
+  --white: #fff;
+  --muted: #9196a6;
+  --text: #161a22;
+  --primary: #ef3b2d;
+  --orange: #ff6a00;
+  --orange-2: #ff8a00;
+  --green: #17c964;
+  --chip: #eef1f7;
+  --line: #e6e8f0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  font-family: Inter, system-ui, Arial, sans-serif;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.phone {
+  width: 375px;
+  background: var(--card);
+  border-radius: 16px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, .5);
+  overflow: hidden;
+}
+
+.phone{
+  width:375px;
+  background:var(--card);
+  border-radius:16px;
+  box-shadow:0 12px 40px rgba(0,0,0,.5);
+  overflow:hidden;         
+}
+
+.header{
+  position:relative;       
+  z-index:2;             
+  background:var(--primary);
+  color:#fff;
+  padding:22px 20px 44px;   
+  text-align:left;
+  border-bottom-left-radius:48px;
+  border-bottom-right-radius:48px;
+}
+.header h1{
+  margin:0 0 4px;
+  font-size:22px;
+  font-weight:800;
+}
+.header p{
+  margin:0;
+  font-size:13px;
+  opacity:.9;
+}
+
+.content{
+  position:relative;
+  z-index:1;                
+  padding:16px;           
+}
+
+.section:first-of-type{
+  margin-top:14px;
+}
+
+.section {
+  margin-bottom: 12px;
+}
+
+.card {
+  background: var(--white);
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  box-shadow: 0 6px 18px rgba(18, 22, 33, .06);
+  padding: 14px;
+}
+
+.card h3 {
+  margin: 0 0 4px;
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.card small {
+  color: var(--muted);
+}
+
+.progress-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.summary {
+  background: #f7f8fc;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px;
+  min-height: 72px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.summary .top {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #61697a;
+  font-size: 13px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+}
+
+.dot.violet {
+  background: #7c4dff;
+}
+
+.dot.orange {
+  background: #ff6a00;
+}
+
+.dot.green {
+  background: #17c964;
+}
+
+.summary .num {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0 8px;
+  border-bottom: 1px solid var(--line);
+}
+
+.bar h4 {
+  margin: 0;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.filters {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.chip {
+  flex: 1;
+  text-align: center;
+  border-radius: 999px;
+  padding: 8px;
+  font-weight: 800;
+  font-size: 13px;
+  border: 1px solid #dde1f2;
+  color: #6b6f82;
+  background: #eceffd;
+}
+
+.chip.active {
+  background: #ffe8d7;
+  color: #c35406;
+  border-color: #ffd1aa;
+}
+
+/* TASKS */
+.task {
+  margin-top: 10px;
+}
+
+.task-card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 14px;
+  box-shadow: 0 6px 18px rgba(18, 22, 33, .06);
+  cursor: pointer;
+  outline: none;
+}
+
+.task-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+  color: #202534;
+}
+
+.check {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  border: 1px solid #bcefd4;
+  color: #12b368;
+  background: #e7fff2;
+  font-size: 16px;
+}
+
+.badges {
+  display: flex;
+  gap: 8px;
+  margin: 10px 0 12px;
+}
+
+.badge {
+  font-size: 12px;
+  font-weight: 800;
+  border-radius: 999px;
+  padding: 6px 10px;
+  border: 1px solid;
+}
+
+.badge.done {
+  background: #e9fff4;
+  color: #0f9e57;
+  border-color: #b9f6d0;
+}
+
+.badge.low,
+.badge.mid,
+.badge.high {
+  background: #ffe6ea;
+  color: #b32b45;
+  border-color: #ffc8d2;
+}
+
+.strip {
+  height: 4px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #12b368, #39d98a);
+}
+
+.meta {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #7c8296;
+  font-size: 12px;
+}
+
+.meta .calendar {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  display: grid;
+  place-items: center;
+  background: #eef1f7;
+  border: 1px solid #e1e5f2;
+}
+
+.footer {
+  position: sticky;
+  bottom: 0;
+  background: transparent;
+  padding: 10px 14px 14px;
+}
+
+.cta {
+  width: 100%;
+  padding: 14px;
+  border: 0;
+  border-radius: 999px;
+  color: #fff;
+  font-weight: 800;
+  font-size: 15px;
+  cursor: pointer;
+  background: linear-gradient(180deg, #ff9a3c, #fe6a20);
+  box-shadow: 0 10px 24px rgba(255, 122, 0, .35);
+}
+</style>
+</head>
+<body>
+<main class="phone">
+    <header class="app-header">
+    <h1>Органайзер Задач</h1>
+    <p>Планируй. Выполняй. Успевай</p>
+    </header>
+
+  <div class="content">
+    <section class="section card">
+      <h3>Резюме вашей работы</h3>
+      <small>Ваш текущий прогресс</small>
+      <div class="progress-row">
+        <div class="summary">
+          <div class="top"><span class="dot violet"></span>Не сделано</div>
+          <div class="num">9</div>
+        </div>
+        <div class="summary">
+          <div class="top"><span class="dot orange"></span>В процессе</div>
+          <div class="num">2</div>
+        </div>
+        <div class="summary">
+          <div class="top"><span class="dot green"></span>Выполнено</div>
+          <div class="num">10</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section card">
+      <div class="bar">
+        <h4>Статистика на 9 сентября</h4>
+      </div>
+      <p style="color:#6b6f82; margin:8px 0 0;">
+        Вы выполнили на 4 задачи больше, чем обычно. Так держать!
+      </p>
+      <div class="filters">
+        <div class="chip">Всего <span class="num">9</span></div>
+        <div class="chip">В процессе <span class="num">2</span></div>
+        <div class="chip active">Выполнено <span class="num">10</span></div>
+      </div>
+    </section>
+
+    <section class="section task">
+      <div class="task-card">
+        <div class="task-title">
+          <div class="check">✔</div>
+          Покормить собаку
+        </div>
+        <div class="badges">
+          <span class="badge done">Выполнено</span>
+          <span class="badge low">Низкий</span>
+        </div>
+        <div class="strip"></div>
+        <div class="meta">
+          <span class="calendar">📅</span>
+          <span>3 сентября</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section task">
+      <div class="task-card">
+        <div class="task-title">
+          <div class="check">✔</div>
+          Сходить в зал
+        </div>
+        <div class="badges">
+          <span class="badge done">Выполнено</span>
+          <span class="badge mid">Средний</span>
+        </div>
+        <div class="strip"></div>
+        <div class="meta">
+          <span class="calendar">📅</span>
+          <span>2 сентября</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section task">
+      <div class="task-card">
+        <div class="task-title">
+          <div class="check">✔</div>
+          Убраться в комнате
+        </div>
+        <div class="badges">
+          <span class="badge done">Выполнено</span>
+          <span class="badge high">Высокий</span>
+        </div>
+        <div class="strip"></div>
+        <div class="meta">
+          <span class="calendar">📅</span>
+          <span>3 сентября</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section task">
+      <div class="task-card">
+        <div class="task-title">
+          <div class="check">✔</div>
+          Собрать конструктор лего-ниндзяго
+        </div>
+        <div class="badges">
+          <span class="badge done">Выполнено</span>
+          <span class="badge low">Низкий</span>
+        </div>
+        <div class="strip"></div>
+        <div class="meta">
+          <span class="calendar">📅</span>
+          <span>4 сентября</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">
+      <button class="cta" id="createBtn" type="button">Создать задачу</button>
+    </div>
+  </div>
+</main>
+
+<script>
+document.getElementById('createBtn').addEventListener('click', () => {
+  window.location.href = 'create.html';
+});
+</script>
+</body>
+</html>
